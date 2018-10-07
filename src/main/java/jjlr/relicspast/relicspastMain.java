@@ -21,6 +21,8 @@ public class relicspastMain {
 	@EventHandler
 	public void PreInit(FMLPreInitializationEvent event) {
 		
+		
+		
 		/*debug*/
 		System.out.println(reference.name + " is starting...");
 	}

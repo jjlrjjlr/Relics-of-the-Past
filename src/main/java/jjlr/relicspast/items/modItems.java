@@ -14,6 +14,7 @@ public class modItems {
 	/*Registration*/
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.registerAll( 
+				
 					orbEnchanters
 				);
 		
