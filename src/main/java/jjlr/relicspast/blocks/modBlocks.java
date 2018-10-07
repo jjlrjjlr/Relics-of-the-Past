@@ -1,17 +1,21 @@
 package jjlr.relicspast.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jjlr.relicspast.reference;
 import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.item.Item;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class modBlocks {
 	
+	public static void register(IForgeRegistry<Block> registery) {
+		
+	}
 	
+	public static void registerItemBlocks(IForgeRegistry<Item> registery) {
+		
+	}
+	
+	public static void registerModels() {
+		
+	}
 
 }
