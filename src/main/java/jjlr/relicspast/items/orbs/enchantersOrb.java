@@ -1,5 +1,6 @@
 package jjlr.relicspast.items.orbs;
 
+import java.util.ArrayList;
 import java.util.Map;
 import jjlr.relicspast.reference;
 import jjlr.relicspast.items.basicItem;
@@ -19,11 +20,11 @@ public class enchantersOrb extends basicItem {
 	
 	/*	NBT variables, not to be
 	 * accessed outside of this class.*/
-	private int[] retrievedEnchantmentIds;
-	private int[] retrievedEnchantmentLvls;
+	private int[] retrievedEnchantmentIds = new int[15];
+	private int[] retrievedEnchantmentLvls = new int[15];
 	private int enchantId;
 	private int enchantLevel;
-	private NBTTagCompound enchantmentNBTReturn;
+	private NBTTagCompound enchantmentNBTReturn = new NBTTagCompound();
 
 	public enchantersOrb() {
 		super("orb_enchanters", reference.modid);
