@@ -42,34 +42,54 @@ public class enchantersOrb extends basicItem {
 		
 		ItemStack helditem = playerIn.getHeldItem(handIn);
 		ItemStack offhand = playerIn.getHeldItemOffhand();
+		NBTTagCompound enchantersOrbNBT;
 		int randomseed = worldIn.rand.nextInt(100);
-		int numberOfStoredEnchantments = helditem.getTagCompound().getIntArray("StoredEnchIds").length;
-		int remainingEnchantmentStorage;
+		int numberOfStoredEnchantments = 0;
+		int remainingEnchantmentStorage = 0;
 		
-		if(!helditem.getTagCompound().hasKey("maxEnchantments")) {
+		if(!helditem.hasTagCompound()) {
+		
+			enchantersOrbNBT = new NBTTagCompound();
+				
+			enchantersOrbNBT.setInteger("maxEnchantments", worldIn.rand.nextInt(10)+5);
 			
-			helditem.getTagCompound().setInteger("maxEnchantments", worldIn.rand.nextInt(10)+5);
+			numberOfStoredEnchantments = enchantersOrbNBT.getIntArray("StoredEnchIds").length;
+			
+			remainingEnchantmentStorage = enchantersOrbNBT.getInteger("maxEnchantments") - numberOfStoredEnchantments;
+		} else {
+			
+			enchantersOrbNBT = helditem.getTagCompound();
 		}
 		
-		remainingEnchantmentStorage = helditem.getTagCompound().getInteger("maxEnchantments") - numberOfStoredEnchantments;
+		helditem.setTagCompound(enchantersOrbNBT);
 		
 		if(offhand.isItemEnchanted()) {
 			
 			//Get enchantments currently stored and re add them to the array here.
 			//Write stored enchantments to tooltips here.
 			
-			helditem.setTagCompound(enchantersOrbHelper.getEnchCompoundFromArrays(enchantersOrbHelper.getEnchantmentIdList(helditem, true), enchantersOrbHelper.getEnchantmentIdList(helditem, false), helditem));
+			enchantersOrbNBT = enchantersOrbHelper.getEnchCompoundFromArrays(enchantersOrbHelper.getEnchantmentIdList(helditem, true), enchantersOrbHelper.getEnchantmentIdList(helditem, false), helditem, enchantersOrbNBT);
+			helditem.setTagCompound(enchantersOrbNBT);
 			//helditem.writeToNBT(getEnchCompoundFromArrays(retrievedEnchantmentIds, retrievedEnchantmentLvls));
 			
-			enchantersOrbHelper.removeEnchantmentsFromItemStack(offhand, remainingEnchantmentStorage);
+			if(remainingEnchantmentStorage > 0) {
 			
-			/*Attempt to break item*/
-			if(randomseed > 90) {
-				helditem.shrink(1);
-				int currentSlot = playerIn.inventory.currentItem;
-				playerIn.inventory.setInventorySlotContents(currentSlot, ItemStack.EMPTY);
-				playerIn.sendMessage(new TextComponentString("This Enchanters orb appears to have broken"));
+				enchantersOrbHelper.removeEnchantmentsFromItemStack(offhand, remainingEnchantmentStorage);
+				
+				/*Attempt to break item*/
+				if(randomseed > 90) {
+					//helditem.shrink(1);
+					//int currentSlot = playerIn.inventory.currentItem;
+					//playerIn.inventory.setInventorySlotContents(currentSlot, ItemStack.EMPTY);
+					helditem.damageItem(1, playerIn);
+					playerIn.sendMessage(new TextComponentString("This Enchanters orb appears to have broken"));
+				}
+			} else {
+				
+				playerIn.sendMessage(new TextComponentString("This Enchanters orb appears to be full."));
 			}
+			
+			System.out.println(remainingEnchantmentStorage);
 			
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, helditem);
 		} else if(worldIn.isRemote) {

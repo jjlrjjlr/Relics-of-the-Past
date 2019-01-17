@@ -113,18 +113,26 @@ public class enchantersOrbHelper {
 	 * 
 	 * @return NBTTagCompound containing two NBTTagIntArray's,<br>one for id's and one for levels.
 	 */
-	public static NBTTagCompound getEnchCompoundFromArrays(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn) {
+	public static NBTTagCompound getEnchCompoundFromArrays(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn, NBTTagCompound nbtIn) {
 		
-		return intEnchantmentArrayToNBT(enchIdsIn, enchLvlsIn, itemIn);
+		return intEnchantmentArrayToNBT(enchIdsIn, enchLvlsIn, itemIn, nbtIn);
 	}
 	
-	private static NBTTagCompound intEnchantmentArrayToNBT(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn) {
+	private static NBTTagCompound intEnchantmentArrayToNBT(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn, NBTTagCompound nbtIn) {
 		
 		ArrayList<Integer> returnIdIntegerArray = new ArrayList<Integer>();
 		ArrayList<Integer> returnLvlIntegerArray = new ArrayList<Integer>();
 		int maxArrayLength = itemIn.getTagCompound().getInteger("maxEnchantments");
 		
-		NBTTagCompound enchantmentNBTReturn = new NBTTagCompound();
+		NBTTagCompound enchantmentNBTReturn;
+		
+		if(nbtIn == null) {
+			
+			enchantmentNBTReturn = new NBTTagCompound();
+		} else {
+			
+			enchantmentNBTReturn = nbtIn;
+		}
 		
 		for(int i: itemIn.getTagCompound().getIntArray("StoredEnchIds")) {
 			
@@ -193,11 +201,6 @@ public class enchantersOrbHelper {
 	
 	private static void removeItemStackEnchantments(ItemStack itemIn, int enchantmentsToRemove) {
 		
-		int i = 0;
-		
-		while(i < enchantmentsToRemove) {
-			
-			itemIn.getEnchantmentTagList().removeTag(i);
-		}
+		System.out.println("Enchantments not removed.");
 	}
 }
