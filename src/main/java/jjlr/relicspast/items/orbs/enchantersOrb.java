@@ -1,17 +1,10 @@
 package jjlr.relicspast.items.orbs;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
-
-import org.apache.commons.lang3.RandomUtils;
-
 import jjlr.relicspast.reference;
 import jjlr.relicspast.items.basicItem;
 import jjlr.relicspast.util.enchantersOrbHelper;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,6 +39,7 @@ public class enchantersOrb extends basicItem {
 		int randomseed = worldIn.rand.nextInt(100);
 		int numberOfStoredEnchantments = 0;
 		int remainingEnchantmentStorage = 0;
+		int maxEnchantments = 0;
 		
 		if(!helditem.hasTagCompound()) {
 		
@@ -58,7 +52,9 @@ public class enchantersOrb extends basicItem {
 			
 			numberOfStoredEnchantments = enchantersOrbNBT.getIntArray("StoredEnchIds").length;
 			
-			remainingEnchantmentStorage = enchantersOrbNBT.getInteger("maxEnchantments") - numberOfStoredEnchantments;
+			maxEnchantments = enchantersOrbNBT.getInteger("maxEnchantments");
+			
+			remainingEnchantmentStorage = maxEnchantments - numberOfStoredEnchantments;
 		}
 		
 		helditem.setTagCompound(enchantersOrbNBT);
@@ -68,9 +64,12 @@ public class enchantersOrb extends basicItem {
 			//Get enchantments currently stored and re add them to the array here.
 			//Write stored enchantments to tooltips here.
 			
-			enchantersOrbNBT = enchantersOrbHelper.getEnchCompoundFromArrays(enchantersOrbHelper.getEnchantmentIdList(helditem, true), enchantersOrbHelper.getEnchantmentIdList(helditem, false), helditem, enchantersOrbNBT);
+			Map<String, int[]> newEnchantmentList = enchantersOrbHelper.getEnchCompoundFromArrays(enchantersOrbHelper.getEnchantmentIdList(offhand, true), enchantersOrbHelper.getEnchantmentIdList(offhand, false), helditem);
+			
+			enchantersOrbNBT.setIntArray("storedEnchIds", newEnchantmentList.get("idArray"));
+			enchantersOrbNBT.setIntArray("storedEnchLvls", newEnchantmentList.get("lvlArray"));
+			
 			helditem.setTagCompound(enchantersOrbNBT);
-			//helditem.writeToNBT(getEnchCompoundFromArrays(retrievedEnchantmentIds, retrievedEnchantmentLvls));
 			
 			if(remainingEnchantmentStorage > 0) {
 			

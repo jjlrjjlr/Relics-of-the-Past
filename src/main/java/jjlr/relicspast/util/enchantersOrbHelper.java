@@ -1,6 +1,7 @@
 package jjlr.relicspast.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomUtils;
@@ -8,7 +9,6 @@ import org.apache.commons.lang3.RandomUtils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class enchantersOrbHelper {
 	
@@ -74,7 +74,6 @@ public class enchantersOrbHelper {
 		ArrayList<Integer> enchantId = new ArrayList<Integer>();
 		ArrayList<Integer> enchantLevel = new ArrayList<Integer>();
 		
-		/*Copy enchantment to helditem, then remove enchantment from offhand item*/
 		Map<Enchantment, Integer> enchall = EnchantmentHelper.getEnchantments(itemIn);
 		for(Enchantment enchantList: enchall.keySet()) {
 			
@@ -84,11 +83,13 @@ public class enchantersOrbHelper {
 		
 		int[] returnIds = new int[enchantId.size()];
 		int[] returnLvls = new int[enchantLevel.size()];
+		int temp_i = 0;
 		
 		for(int i: enchantId) {
 			
-			returnIds[i] = i;
-			returnLvls[i] = i;
+			returnIds[temp_i] = i;
+			returnLvls[temp_i] = i;
+			temp_i++;
 		}
 		
 		if(lvlOrId == true) {
@@ -103,33 +104,23 @@ public class enchantersOrbHelper {
 	/**
 	 * @author jjlr
 	 * 
-	 * @param enchIdsIn Array of enchantment integer id's.
-	 * @param enchLvlsIn Array of enchantment integer levels.
+	 * @param enchIdsIn Array of enchantment integer id's to add to array.
+	 * @param enchLvlsIn Array of enchantment integer levels to add to array.
 	 * @param itemIn Item containing the initial list of enchantments.
+	 * @param nbtIn
 	 * 
-	 * 
-	 * @return int[] containing either the complete list of stored enchantments after adding enchantments from offhand, if any.
+	 * @return Returns Map<String, int[]> containing an array of id's and lvl's.
 	 */
-	public static NBTTagCompound getEnchCompoundFromArrays(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn, NBTTagCompound nbtIn, boolean idOrLvl) {
+	public static Map<String, int[]> getEnchCompoundFromArrays(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn) {
 		
-		return intEnchantmentArrayToNBT(enchIdsIn, enchLvlsIn, itemIn, nbtIn, idOrLvl);
+		return intEnchantmentArrayToNBT(enchIdsIn, enchLvlsIn, itemIn);
 	}
 	
-	private static NBTTagCompound intEnchantmentArrayToNBT(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn, NBTTagCompound nbtIn, boolean idOrLvl) {
+	private static Map<String, int[]> intEnchantmentArrayToNBT(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn) {
 		
 		ArrayList<Integer> returnIdIntegerArray = new ArrayList<Integer>();
 		ArrayList<Integer> returnLvlIntegerArray = new ArrayList<Integer>();
 		int maxArrayLength = itemIn.getTagCompound().getInteger("maxEnchantments");
-		
-		NBTTagCompound enchantmentNBTReturn;
-		
-		if(nbtIn == null) {
-			
-			enchantmentNBTReturn = new NBTTagCompound();
-		} else {
-			
-			enchantmentNBTReturn = nbtIn;
-		}
 		
 		for(int i: itemIn.getTagCompound().getIntArray("StoredEnchIds")) {
 			
@@ -162,6 +153,7 @@ public class enchantersOrbHelper {
 			int[] tempLvlArray = new int[returnIdIntegerArray.size()];
 			int temp_x = 0;
 			int temp_y = 0;
+			Map<String, int[]> returnArrayMap = new HashMap<String, int[]>();
 			
 			for(int i: returnIdIntegerArray) {
 				
@@ -175,13 +167,21 @@ public class enchantersOrbHelper {
 				temp_y++;
 			}
 			
-			enchantmentNBTReturn.setIntArray("StoredEnchIds", tempIdArray);
-			enchantmentNBTReturn.setIntArray("StoredEnchLvls", tempLvlArray);
+			returnArrayMap.put("idArray", tempIdArray);
+			returnArrayMap.put("lvlArray", tempLvlArray);
 			
-			return enchantmentNBTReturn;
+			return returnArrayMap;
 		} else {
 			
-			return enchantmentNBTReturn;
+			Map<String, int[]> returnArrayMap = new HashMap<String, int[]>();
+			
+			int[] temp_m = {0};
+			int[] temp_n = {0};
+			
+			returnArrayMap.put("idArray", temp_m);
+			returnArrayMap.put("lvlArray", temp_n);
+			
+			return returnArrayMap;
 		}
 		
 	}
@@ -202,7 +202,7 @@ public class enchantersOrbHelper {
 		
 		while(temp_i < enchantmentsToRemove) {
 			
-			itemIn.getEnchantmentTagList().removeTag(0);
+			itemIn.getEnchantmentTagList().removeTag(1);
 			temp_i++;
 		}
 	}
