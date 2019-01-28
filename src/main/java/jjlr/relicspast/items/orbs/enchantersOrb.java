@@ -52,13 +52,13 @@ public class enchantersOrb extends basicItem {
 			enchantersOrbNBT = new NBTTagCompound();
 				
 			enchantersOrbNBT.setInteger("maxEnchantments", worldIn.rand.nextInt(10)+5);
+		} else {
+			
+			enchantersOrbNBT = helditem.getTagCompound();
 			
 			numberOfStoredEnchantments = enchantersOrbNBT.getIntArray("StoredEnchIds").length;
 			
 			remainingEnchantmentStorage = enchantersOrbNBT.getInteger("maxEnchantments") - numberOfStoredEnchantments;
-		} else {
-			
-			enchantersOrbNBT = helditem.getTagCompound();
 		}
 		
 		helditem.setTagCompound(enchantersOrbNBT);

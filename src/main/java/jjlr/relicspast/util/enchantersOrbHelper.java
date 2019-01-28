@@ -11,11 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class enchantersOrbHelper {
-
-	@SuppressWarnings(value = {"unused" })
-	private void nbtToEnchantmentList() {
-		
-	}
 	
 	/**
 	 * @author jjlr
@@ -110,15 +105,17 @@ public class enchantersOrbHelper {
 	 * 
 	 * @param enchIdsIn Array of enchantment integer id's.
 	 * @param enchLvlsIn Array of enchantment integer levels.
+	 * @param itemIn Item containing the initial list of enchantments.
 	 * 
-	 * @return NBTTagCompound containing two NBTTagIntArray's,<br>one for id's and one for levels.
+	 * 
+	 * @return int[] containing either the complete list of stored enchantments after adding enchantments from offhand, if any.
 	 */
-	public static NBTTagCompound getEnchCompoundFromArrays(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn, NBTTagCompound nbtIn) {
+	public static NBTTagCompound getEnchCompoundFromArrays(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn, NBTTagCompound nbtIn, boolean idOrLvl) {
 		
-		return intEnchantmentArrayToNBT(enchIdsIn, enchLvlsIn, itemIn, nbtIn);
+		return intEnchantmentArrayToNBT(enchIdsIn, enchLvlsIn, itemIn, nbtIn, idOrLvl);
 	}
 	
-	private static NBTTagCompound intEnchantmentArrayToNBT(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn, NBTTagCompound nbtIn) {
+	private static NBTTagCompound intEnchantmentArrayToNBT(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn, NBTTagCompound nbtIn, boolean idOrLvl) {
 		
 		ArrayList<Integer> returnIdIntegerArray = new ArrayList<Integer>();
 		ArrayList<Integer> returnLvlIntegerArray = new ArrayList<Integer>();
@@ -201,6 +198,12 @@ public class enchantersOrbHelper {
 	
 	private static void removeItemStackEnchantments(ItemStack itemIn, int enchantmentsToRemove) {
 		
-		System.out.println("Enchantments not removed.");
+		int temp_i = 0;
+		
+		while(temp_i < enchantmentsToRemove) {
+			
+			itemIn.getEnchantmentTagList().removeTag(0);
+			temp_i++;
+		}
 	}
 }
