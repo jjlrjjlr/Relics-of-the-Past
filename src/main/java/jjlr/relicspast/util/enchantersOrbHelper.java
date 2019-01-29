@@ -18,8 +18,8 @@ public class enchantersOrbHelper {
 	
 	/**
 	 * @author jjlr
-	 * @param itemIn ItemStack containing the Stored enchantments to be used in the random pool.
 	 * 
+	 * @param itemIn ItemStack containing the Stored enchantments to be used in the random pool.
 	 * @param getEnchantmentPosition If true the chosen enchantment being returned will be removed from the ItemStack.
 	 * 
 	 * @return Returns an integer array containing one enchantment id and the level of that enchantment respectively, i.e. returnedInt[enchantmentId, EnchantmentLvl]. If removeEnchantmentOnReturn is true, then the returned integer array will contain an extra number marking the enchantment that was chosen, i.e. returnedInt[enchantmentId, enchantmentLvl, chosenEnchantmentPlace].
@@ -40,12 +40,9 @@ public class enchantersOrbHelper {
 		
 		for(int temp_x = 0; temp_x < idIntArray.length; temp_x++) {
 			
-			if(idIntArray[temp_x] != -314) {
-				
-				tempIdArray.add(idIntArray[temp_x]);
-				tempLvlArray.add(lvlIntArray[temp_x]);
-				tempPosArray.add(temp_x);
-			}
+			tempIdArray.add(idIntArray[temp_x]);
+			tempLvlArray.add(lvlIntArray[temp_x]);
+			tempPosArray.add(temp_x);
 		}
 		
 		int randomInt = RandomUtils.nextInt(0, tempIdArray.size());
@@ -62,10 +59,14 @@ public class enchantersOrbHelper {
 	}
 	
 	/**
+	 * Used to get an {@code int[]} containing either the id's or the levels
+	 * of all the enchantments on the item {@link itemIn} supplied. 
+	 * 
+	 * @author jjlr
 	 * 
 	 * @param itemIn ItemStack to generate enchantment list from.
-	 * @param lvlOrId If true returns int[] containing the ids of the enchantments on the ItemStack, if false returns an int[] containing the level for each enchantment respectively.
-	 * @return Returns an int[] containing either the ids or levels of the enchantments on the given ItemStack.
+	 * @param lvlOrId If true returns {@code int[]} containing the ids of the enchantments on the ItemStack, if false returns an {@code int[]} containing the level for each enchantment respectively.
+	 * @return Returns an {@code int[]} containing either the ids or levels of the enchantments on the given ItemStack.
 	 */
 	public static int[] getEnchantmentIdList(ItemStack itemIn, boolean lvlOrId) {
 		
@@ -110,11 +111,11 @@ public class enchantersOrbHelper {
 	/**
 	 * @author jjlr
 	 * 
-	 * @param enchIdsIn Array of enchantment integer id's to add to array.
-	 * @param enchLvlsIn Array of enchantment integer levels to add to array.
-	 * @param itemIn Item containing the initial list of enchantments.
+	 * @param enchIdsIn Array of enchantment integer id's to merge into output array.
+	 * @param enchLvlsIn Array of enchantment integer levels to merge into output array.
+	 * @param itemIn Item containing the initial list of enchantments in {@code storedEnchIds} and {@code storedEnchLvls}.
 	 * 
-	 * @return Returns Map<String, int[]> containing an array of id's and lvl's.
+	 * @return Returns Map<String, int[]> containing an array of id's {@code idArray} and lvl's {@code lvlArray}.
 	 */
 	public static Map<String, int[]> getEnchCompoundFromArrays(int[] enchIdsIn, int[] enchLvlsIn, ItemStack itemIn) {
 		
@@ -192,6 +193,11 @@ public class enchantersOrbHelper {
 	}
 	
 	/**
+	 * Used to remove the enchantments from the given item {@code itemIn}.
+	 * If there are fewer enchantments on the item than {@code enchantmentsToRemove}
+	 * all the enchantments are removed. If there are more enchantments
+	 * than {@code enchantmentsToRemove} then the number of enchantments
+	 * supplied by {@code enchantmentsToRemove} will be removed.
 	 * 
 	 * @param itemIn ItemStack to remove enchantments from.
 	 * @param enchantmentsToRemove Number of enchantments to remove, enchantments are removed in order of first position to last.

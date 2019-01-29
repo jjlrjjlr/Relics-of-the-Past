@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "relicspast",
+  "name": "Relics of the Past",
+  "description": "Relics of the Past adds strange and powerful ancient objects to the world, will you learn to wield their power. Or will you succumb to their will.",
   "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
+  "mcversion": "1.12.2",
+  "url": "https://github.com/jjlrjjlr/Relics-of-the-Past",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["jjlr"],
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

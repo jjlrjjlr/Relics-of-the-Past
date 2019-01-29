@@ -18,6 +18,17 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
+/*
+ * jjlr - 01/28/2019
+ * Notes:
+ *   - Expand code for breaking orb, add perfection value
+ *     to nbt to control chance of orb breaking.
+ *   - Separate server from client code.
+ *   - Look into rewriting how maximum enchantments are
+ *     handled, improve remaining enchantment storage
+ *     handling.
+ */
+
 public class enchantersOrb extends basicItem {
 
 	private static final Logger logger = LogManager.getLogger("Relics_Of_The_Past/enchantersOrb");
@@ -72,18 +83,39 @@ public class enchantersOrb extends basicItem {
 			//Get enchantments currently stored and re add them to the array here.
 			//Write stored enchantments to tooltips here.
 			
-			Map<String, int[]> newEnchantmentList = enchantersOrbHelper.getEnchCompoundFromArrays(enchantersOrbHelper.getEnchantmentIdList(offhand, true), enchantersOrbHelper.getEnchantmentIdList(offhand, false), helditem);
 			
-			enchantersOrbNBT.setIntArray("storedEnchIds", newEnchantmentList.get("idArray"));
-			enchantersOrbNBT.setIntArray("storedEnchLvls", newEnchantmentList.get("lvlArray"));
-			
-			helditem.setTagCompound(enchantersOrbNBT);
 			
 			if(remainingEnchantmentStorage > 0) {
 			
+				/*
+				 * Start- Get list of enchantments on offhand item and
+				 *   add them to the enchantments already present on
+				 *   the current orb with 
+				 *   enchantersOrbHelper.getEnchCompoundFromArrays
+				 *   and enchantersOrbHelper.getEnchantmentIdList.
+				 * Then- Retrieve enchantments and levels from
+				 *   newEnchantmentList and add them to storedEnchIds
+				 *   and storedEnchLvls, then save the edited
+				 *   NBT data to the enchanters orb.
+				 * Last- Remove enchantments from offhand item using
+				 *   enchantersOrbHelper.removeEnchantmentsFromItemStack, 
+				 *   if there are more enchantments on the item than
+				 *   there are remaining enchantments left for the enchanters
+				 *   orb only remove the number of remaining enchantments.
+				 */
+				
+				Map<String, int[]> newEnchantmentList = enchantersOrbHelper.getEnchCompoundFromArrays(enchantersOrbHelper.getEnchantmentIdList(offhand, true), enchantersOrbHelper.getEnchantmentIdList(offhand, false), helditem);
+				
+				enchantersOrbNBT.setIntArray("storedEnchIds", newEnchantmentList.get("idArray"));
+				enchantersOrbNBT.setIntArray("storedEnchLvls", newEnchantmentList.get("lvlArray"));
+				
+				helditem.setTagCompound(enchantersOrbNBT);
+				
 				enchantersOrbHelper.removeEnchantmentsFromItemStack(offhand, remainingEnchantmentStorage);
 				
-				/*Attempt to break item*/
+				//End enchantment removal and saving.
+				
+				//Attempt to break item
 				if(randomseed > 90) {
 					//helditem.shrink(1);
 					//int currentSlot = playerIn.inventory.currentItem;
