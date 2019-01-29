@@ -76,14 +76,9 @@ public class enchantersOrb extends basicItem {
 		
 		helditem.setTagCompound(enchantersOrbNBT);
 		
-		logger.info(remainingEnchantmentStorage);
+		logger.info("There are currently {0} enchantments remaining on this orb.", remainingEnchantmentStorage);
 		
 		if(offhand.isItemEnchanted()) {
-			
-			//Get enchantments currently stored and re add them to the array here.
-			//Write stored enchantments to tooltips here.
-			
-			
 			
 			if(remainingEnchantmentStorage > 0) {
 			
@@ -113,13 +108,13 @@ public class enchantersOrb extends basicItem {
 				
 				enchantersOrbHelper.removeEnchantmentsFromItemStack(offhand, remainingEnchantmentStorage);
 				
-				//End enchantment removal and saving.
+				//End of enchantment removal and saving.
+				
+				//Add stored enchantments to tooltips here.
 				
 				//Attempt to break item
 				if(randomseed > 90) {
 					//helditem.shrink(1);
-					//int currentSlot = playerIn.inventory.currentItem;
-					//playerIn.inventory.setInventorySlotContents(currentSlot, ItemStack.EMPTY);
 					helditem.damageItem(1, playerIn);
 					playerIn.sendMessage(new TextComponentString("This Enchanters orb appears to have broken"));
 				}
@@ -128,12 +123,13 @@ public class enchantersOrb extends basicItem {
 				playerIn.sendMessage(new TextComponentString("This Enchanters orb appears to be full."));
 			}
 			
-			System.out.println(remainingEnchantmentStorage);
-			
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, helditem);
 		} else if(worldIn.isRemote) {
 			
-			playerIn.sendMessage(new TextComponentString("Item is not enchanted"));
+			if(!offhand.isItemEnchanted()) {
+			
+				playerIn.sendMessage(new TextComponentString("Item is not enchanted"));
+			}
 			
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, helditem);
 		} else {

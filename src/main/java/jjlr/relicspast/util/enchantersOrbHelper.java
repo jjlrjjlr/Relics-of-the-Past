@@ -89,12 +89,18 @@ public class enchantersOrbHelper {
 		int[] returnIds = new int[enchantId.size()];
 		int[] returnLvls = new int[enchantLevel.size()];
 		int temp_i = 0;
+		int temp_j = 0;
 		
 		for(int i: enchantId) {
 			
 			returnIds[temp_i] = i;
-			returnLvls[temp_i] = i;
 			temp_i++;
+		}
+		
+		for(int j: enchantLevel) {
+			
+			returnLvls[temp_j] = j;
+			temp_j++;
 		}
 		
 		logger.debug("Enchantments returned from offhand item are {0} at levels {1}", returnIds, returnLvls);
