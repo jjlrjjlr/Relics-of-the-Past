@@ -1,5 +1,6 @@
 package jjlr.relicspast;
 
+import org.apache.logging.log4j.*;
 import jjlr.relicspast.proxy.commonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -12,6 +13,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = reference.modid, name = reference.name, version = reference.version)
 public class relicspastMain {
 
+	private static final Logger logger = LogManager.getLogger("Relics_Of_The_Past");
+	
+	
 	@Instance
 	public static relicspastMain instance;
 	
@@ -21,10 +25,8 @@ public class relicspastMain {
 	@EventHandler
 	public void PreInit(FMLPreInitializationEvent event) {
 		
-		
-		
 		/*debug*/
-		System.out.println(reference.name + " is starting...");
+		logger.info(reference.name + " is starting...");
 	}
 	
 	@EventHandler
@@ -36,7 +38,7 @@ public class relicspastMain {
 	public void PostInit(FMLPostInitializationEvent event) {
 		
 		/*debug*/
-		System.out.println(reference.name + " has Started Successfully.");
+		logger.info(reference.name + " has Started Successfully.");
 	}
 	
 }

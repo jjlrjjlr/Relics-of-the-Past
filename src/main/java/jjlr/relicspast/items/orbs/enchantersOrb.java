@@ -1,6 +1,10 @@
 package jjlr.relicspast.items.orbs;
 
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import jjlr.relicspast.reference;
 import jjlr.relicspast.items.basicItem;
 import jjlr.relicspast.util.enchantersOrbHelper;
@@ -16,6 +20,8 @@ import net.minecraft.world.World;
 
 public class enchantersOrb extends basicItem {
 
+	private static final Logger logger = LogManager.getLogger("Relics_Of_The_Past/enchantersOrb");
+	
 	public enchantersOrb() {
 		super("orb_enchanters", reference.modid);
 		
@@ -50,7 +56,7 @@ public class enchantersOrb extends basicItem {
 			
 			enchantersOrbNBT = helditem.getTagCompound();
 			
-			numberOfStoredEnchantments = enchantersOrbNBT.getIntArray("StoredEnchIds").length;
+			numberOfStoredEnchantments = enchantersOrbNBT.getIntArray("storedEnchIds").length;
 			
 			maxEnchantments = enchantersOrbNBT.getInteger("maxEnchantments");
 			
@@ -58,6 +64,8 @@ public class enchantersOrb extends basicItem {
 		}
 		
 		helditem.setTagCompound(enchantersOrbNBT);
+		
+		logger.info(remainingEnchantmentStorage);
 		
 		if(offhand.isItemEnchanted()) {
 			

@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 
 public class enchantersOrbHelper {
+	
+	private static final Logger logger = LogManager.getLogger("Relics_Of_The_Past/EnchanterOrbHelper");
 	
 	/**
 	 * @author jjlr
@@ -92,6 +96,8 @@ public class enchantersOrbHelper {
 			temp_i++;
 		}
 		
+		logger.debug("Enchantments returned from offhand item are {0} at levels {1}", returnIds, returnLvls);
+		
 		if(lvlOrId == true) {
 			
 			return returnIds;
@@ -107,7 +113,6 @@ public class enchantersOrbHelper {
 	 * @param enchIdsIn Array of enchantment integer id's to add to array.
 	 * @param enchLvlsIn Array of enchantment integer levels to add to array.
 	 * @param itemIn Item containing the initial list of enchantments.
-	 * @param nbtIn
 	 * 
 	 * @return Returns Map<String, int[]> containing an array of id's and lvl's.
 	 */
@@ -199,11 +204,31 @@ public class enchantersOrbHelper {
 	private static void removeItemStackEnchantments(ItemStack itemIn, int enchantmentsToRemove) {
 		
 		int temp_i = 0;
+		int enchNum = itemIn.getEnchantmentTagList().tagCount();
 		
-		while(temp_i < enchantmentsToRemove) {
+		if(enchNum < enchantmentsToRemove) {
 			
-			itemIn.getEnchantmentTagList().removeTag(1);
-			temp_i++;
+			while(temp_i < enchNum) {
+				
+				try {
+					itemIn.getEnchantmentTagList().removeTag(0);
+				} catch(Exception e) {
+					logger.warn("Error at enchantersOrbHelper.");
+				}
+				temp_i++;
+			}
+		} else {
+			
+			while(temp_i < enchantmentsToRemove) {
+				
+				try {
+					itemIn.getEnchantmentTagList().removeTag(0);
+				} catch(Exception e) {
+					logger.warn("Error at enchantersOrbHelper");
+				}
+				temp_i++;
+			}
 		}
+		
 	}
 }
